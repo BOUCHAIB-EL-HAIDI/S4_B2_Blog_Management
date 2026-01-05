@@ -1,6 +1,6 @@
-Create DATABASE BLOG;
+Create DATABASE blog;
 
-USE BLOG;
+USE blog;
 
 
 
