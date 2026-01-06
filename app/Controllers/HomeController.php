@@ -8,7 +8,7 @@ class HomeController extends Controller {
 
 public function index(){
 
-    $this->view('home' , ['title' => 'welcome']);
+    $this->view('signup' , ['title' => 'welcome']);
 }
 
 
