@@ -6,5 +6,6 @@ session_start();
 
 $router = new Router();
 $router->get('/', "HomeController@index");
-$router->get('/about', "HomeController@index");
+$router->get('/login', "LoginController@login");
+$router->get('/signup', "SignupController@signup");
 $router->dispatch();
