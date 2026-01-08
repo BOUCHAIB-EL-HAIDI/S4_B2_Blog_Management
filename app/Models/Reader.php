@@ -1,28 +1,21 @@
 <?php
-
 namespace Models;
 
-USE User ;
+class Reader extends User
+{
+private string $role ;
 
+public function __construct($id ,$name , $email , $password ){
 
-class Reader extends User {
+parent::__construct($id , $name , $email , $password);
+$this->role = 'author';
 
-      
+}
 
-    public function addcoment( $user_id ,$article_id ,  $content ){
+public function getRole(){
 
-     $stmt = $this->pdo->prepare(" INSERT INTO comments ");
-
-
-
-
-
-
-    }
-
-
-
-
+    return $this->role;
+}
 
 
 }

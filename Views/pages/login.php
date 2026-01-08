@@ -11,11 +11,32 @@ require_once __DIR__ . "/../partials/header.php";
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <?php if(isset($_SESSION['success'])): ?>
+
+            <p id="success"class="text-green-700 font-bold text-center"><?=$_SESSION['success']?></p>
+
+            <script>
+            const success = document.getElementById("success");
+
+             if(success){
+             setTimeout(() => {
+              
+              success.style.display = 'none';
+
+             }, 3000);
+
+             }
+             
+            </script>
+
+            <?php unset($_SESSION['success']) ?>
+        
+           <?php endif; ?>
     <form action="/login" method="POST" class="space-y-6">
       <div>
         <label for="email" class="block text-sm/6 font-medium text-black-100">Email address</label>
         <div class="mt-2">
-          <input id="email" placeholder = "enter your email" type="email" name="email" required autocomplete="email" class=" border-2 border-black-200 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-black-100 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+          <input id="email" placeholder = "enter your email" type="email" name="email" required autocomplete="email" class=" border-2 border-black-200 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-black outline-1 -outline-offset-1 outline-white/10 placeholder:text-black-100 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
         </div>
       </div>
 
@@ -24,7 +45,7 @@ require_once __DIR__ . "/../partials/header.php";
           <label for="password" class="block text-sm/6 font-medium text-black-100">Password</label>
         </div>
         <div class="mt-2">
-          <input id="password" placeholder = "enter your password"type="password" name="password" required autocomplete="current-password" class="border-2 border-black-200 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+          <input id="password" placeholder = "enter your password"type="password" name="password" required autocomplete="current-password" class="border-2 border-black-200 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-black outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
         </div>
       </div>
 
