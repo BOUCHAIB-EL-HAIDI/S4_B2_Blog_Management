@@ -1,16 +1,35 @@
 <?php
-require_once __DIR__ . "/../../config/env.php";
+namespace Core;
+
+use PDO;
+use PDOException;
+use RuntimeException;
+
+require_once __DIR__ . "/../config/env.php";
 class Database
 {
-    private static ?PDO $connection = null;
+    private static ?Database $instance = null;
 
-    public static function getConnection(): PDO
+    private ?PDO $connection = null;
+
+    private function __construct() {}
+
+    public static function getInstance(): Database
     {
-        if (self::$connection === null) {
+        if (self::$instance === null) {
+            self::$instance = new Database();
+        }
+
+        return self::$instance;
+    }
+
+    public function getConnection(): PDO
+    {
+        if ($this->connection === null) {
             try {
                 $dsn = "mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']};charset=utf8mb4";
 
-                self::$connection = new PDO(
+                $this->connection = new PDO(
                     $dsn,
                     $_ENV['DB_USER'],
                     $_ENV['DB_PASS'],
@@ -25,6 +44,6 @@ class Database
             }
         }
 
-        return self::$connection;
+        return $this->connection;
     }
 }
