@@ -1,21 +1,20 @@
 <?php
 namespace Models;
 
+use Models\User;
+
 class Reader extends User
 {
-private string $role ;
+    protected string $role;
 
-public function __construct($id ,$name , $email , $password ){
+    public function __construct(int $id, string $name, string $email)
+    {
+        parent::__construct($id, $name, $email);
+        $this->role = 'reader'; 
+    }
 
-parent::__construct($id , $name , $email , $password);
-$this->role = 'author';
-
-}
-
-public function getRole(){
-
-    return $this->role;
-}
-
-
+    public function getRole(): string
+    {
+        return $this->role;
+    }
 }

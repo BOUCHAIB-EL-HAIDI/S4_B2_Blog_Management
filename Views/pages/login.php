@@ -1,8 +1,4 @@
-<?php 
-
-require_once __DIR__ . "/../partials/header.php";
-
-?>
+<?php require_once __DIR__ . '/../partials/header.php'; ?>
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -32,8 +28,23 @@ require_once __DIR__ . "/../partials/header.php";
             <?php unset($_SESSION['success']) ?>
         
            <?php endif; ?>
-    <form action="/login" method="POST" class="space-y-6">
-      <div>
+
+     <?php if (isset($_SESSION['error'])): ?>
+     <p id="error" class="text-red-700 font-bold text-center"><?= $_SESSION['error'] ?></p>
+
+    <script>
+    const error = document.getElementById("error");
+    if(error){
+      setTimeout(() => {
+        error.style.display = 'none';
+      }, 3000);
+     }
+     </script>
+
+    <?php unset($_SESSION['error']); endif; ?>
+           
+       <form action="/login" method="POST" class="space-y-6">
+       <div>
         <label for="email" class="block text-sm/6 font-medium text-black-100">Email address</label>
         <div class="mt-2">
           <input id="email" placeholder = "enter your email" type="email" name="email" required autocomplete="email" class=" border-2 border-black-200 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-black outline-1 -outline-offset-1 outline-white/10 placeholder:text-black-100 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />

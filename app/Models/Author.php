@@ -1,18 +1,15 @@
 <?php
-namespace App\Models;
+namespace Models;
+
+use Models\Reader;
 
 class Author extends Reader
 {
-    private string $role;
-
-    public function __construct(int $id, string $name, string $email, string $password)
+    public function __construct(int $id, string $name, string $email)
     {
-        parent::__construct($id, $name, $email, $password);
-        $this->role = 'author';
+        parent::__construct($id, $name, $email);
+        $this->role = 'author'; 
     }
-
-    public function getRole(): string
-    {
-        return $this->role;
-    }
+    
+  
 }
