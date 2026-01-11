@@ -3,16 +3,9 @@ namespace Models;
 use Models\User;
 class Admin extends User
 {
-    private string $role;
-
-    public function __construct(int $id, string $name, string $email)
+    public function __construct(int $id, string $name, string $email, string $password)
     {
-        parent::__construct($id, $name, $email);
-        $this->role = 'admin';
+        parent::__construct($id, $name, $email, $password, 'admin');
     }
 
-    public function getRole(): string
-    {
-        return $this->role;
-    }
 }

@@ -10,11 +10,15 @@ abstract class User
     protected string $name;
     protected string $email;
     protected string $password;
-    public function __construct(int $id, string $name, string $email)
+    protected string $role; 
+
+    public function __construct(int $id, string $name, string $email, string $password, string $role)
     {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
     }
 
     public function getId(): int
@@ -33,7 +37,16 @@ abstract class User
     }
 
 
-    abstract public function getRole(): string;
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
 }
 
 ?>

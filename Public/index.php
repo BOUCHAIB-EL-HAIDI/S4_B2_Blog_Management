@@ -11,31 +11,43 @@ $router = new Router();
 
 $router->get('/', "HomeController@index");
 
-$router->get('/signup', "AuthController@signup");
-$router->post('/signup', "AuthController@signup");
+$router->get('/404', "NotFoundController@index");
 
-$router->get('/login', "LoginController@login");
-$router->post('/login', "LoginController@login");
-
-$router->get('/logout', "LoginController@logout");
+// Pages
 $router->get('/about', "HomeController@about");
 $router->get('/profile', "ProfileController@index");
-$router->get('/admin/dashboard', "AdminController@dashboard");
-$router->get('/author/dashboard', "AuthorController@dashboard");
+
+// Auth
+$router->get('/signup', "AuthController@signup");
+$router->post('/signup', "AuthController@signup");
+$router->get('/login', "LoginController@login");
+$router->post('/login', "LoginController@login");
+$router->get('/logout', "LoginController@logout");
+
+// Articles
+// Articles
+$router->get('/articles', "ArticleController@index");
 
 
-$router->get('/profile', "ProfileController@index");
+// Reader Actions (Comments & Likes)
+$router->post('/article/comment', "CommentController@addComment");
+$router->get('/comment/delete', "CommentController@deleteComment");
+$router->post('/article/like', "LikeController@toggleLike");
 
-
+// Author Dashboard
 $router->get('/author/dashboard', "AuthorController@dashboard");
 $router->get('/author/articles/create', "AuthorController@create");
 $router->post('/author/articles/create', "AuthorController@create");
-$router->get('/author/articles/edit/{id}', "AuthorController@edit");
-$router->post('/author/articles/edit/{id}', "AuthorController@edit");
-$router->get('/author/articles/delete/{id}', "AuthorController@delete");
+$router->get('/author/articles/edit', "AuthorController@edit");
+$router->post('/author/articles/edit', "AuthorController@update");
+$router->get('/author/articles/delete', "AuthorController@delete");
 
-
+// Admin Dashboard & Categories
 $router->get('/admin/dashboard', "AdminController@dashboard");
 $router->get('/admin/categories', "AdminController@categories");
+$router->post('/admin/categories/create', "AdminController@createCategory");
+$router->get('/admin/categories/edit', "AdminController@editCategory");
+$router->post('/admin/categories/edit', "AdminController@updateCategory");
+$router->get('/admin/categories/delete', "AdminController@deleteCategory");
 
 $router->dispatch();

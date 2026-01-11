@@ -20,7 +20,8 @@
             </div>
         <?php endif; ?>
         
-        <form action="/author/articles/edit/<?= $data['article']['id'] ?>" method="POST" class="space-y-6">
+        <form action="/author/articles/edit" method="POST" class="space-y-6">
+            <input type="hidden" name="id" value="<?= $data['article']['id'] ?>">
             <div>
                 <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
                     Titre de l'article *

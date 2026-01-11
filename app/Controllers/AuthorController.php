@@ -187,9 +187,15 @@ class AuthorController extends Controller
         }
     }
     
-    public function edit($id)
+    public function edit()
     {
         $this->checkAuthorAccess();
+        
+        $id = $_GET['id'] ?? null;
+        if (!$id) { 
+            header('Location: /author/dashboard'); 
+            exit; 
+        }
         
         // Get article and verify ownership
         $article = $this->getArticleById($id);
@@ -200,22 +206,30 @@ class AuthorController extends Controller
             exit;
         }
         
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $allCategories = $this->getAllCategories();
-            $articleCategories = $this->getArticleCategories($id);
-            
-            $this->view('author/edit', [
-                'title' => 'Modifier l\'Article - MyBlog',
-                'article' => $article,
-                'all_categories' => $allCategories,
-                'article_categories' => $articleCategories,
-                'errors' => $_SESSION['errors'] ?? []
-            ]);
-            
-            unset($_SESSION['errors']);
-            return;
-        }
+        $allCategories = $this->getAllCategories();
+        $articleCategories = $this->getArticleCategories($id);
         
+        $this->view('author/edit', [
+            'title' => 'Modifier l\'Article - MyBlog',
+            'article' => $article,
+            'all_categories' => $allCategories,
+            'article_categories' => $articleCategories,
+            'errors' => $_SESSION['errors'] ?? []
+        ]);
+        
+        unset($_SESSION['errors']);
+    }
+
+    public function update()
+    {
+        $this->checkAuthorAccess();
+
+        $id = $_POST['id'] ?? null;
+        if (!$id) { 
+            header('Location: /author/dashboard'); 
+            exit; 
+        }
+
         // POST - Update article
         $title = trim($_POST['title'] ?? '');
         $content = trim($_POST['content'] ?? '');
@@ -277,10 +291,17 @@ class AuthorController extends Controller
         }
     }
     
-    public function delete($id)
+    public function delete()
     {
         $this->checkAuthorAccess();
         
+        $id = $_GET['id'] ?? null; // ID is passed via GET for delete link
+        if (!$id) {
+            $_SESSION['error'] = "ID d'article manquant pour la suppression.";
+            header('Location: /author/dashboard');
+            exit;
+        }
+
         // Verify ownership
         $stmt = $this->pdo->prepare("SELECT author_id FROM articles WHERE id = ?");
         $stmt->execute([$id]);

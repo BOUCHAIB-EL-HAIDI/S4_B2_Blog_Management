@@ -32,50 +32,76 @@
 <?php else: ?>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($data['articles'] as $article): ?>
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-                <div class="h-48 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-6xl">
-                    <?= strtoupper(substr($article['title'], 0, 1)) ?>
-                </div>
                 <div class="p-6">
-                    <div class="mb-3">
-                        <?php if (!empty($article['categories'])): ?>
-                            <?php foreach ($article['categories'] as $cat): ?>
-                                <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1">
-                                    <?= htmlspecialchars($cat) ?>
-                                </span>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <h3 class="text-xl font-bold mb-2 line-clamp-2">
+                    <h3 class="text-2xl font-bold mb-4">
                         <?= htmlspecialchars($article['title']) ?>
                     </h3>
                     
-                    <p class="text-gray-600 mb-4 line-clamp-3">
-                        <?= htmlspecialchars(substr($article['content'], 0, 150)) ?>...
-                    </p>
-                    
-                    <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-                        <span>Par <?= htmlspecialchars($article['author_name']) ?></span>
-                        <span><?= date('d/m/Y', strtotime($article['created_at'])) ?></span>
+                    <div class="prose max-w-none mb-6 text-gray-800">
+                        <?= nl2br(htmlspecialchars($article['content'])) ?>
                     </div>
                     
-                    <div class="flex items-center justify-between">
-                        <div class="flex gap-4 text-sm">
-                            <span class="flex items-center text-green-600">
-                                ❤️ <?= $article['likes_count'] ?>
-                            </span>
-                            <span class="flex items-center text-purple-600">
-                                💬 <?= $article['comments_count'] ?>
-                            </span>
+                    <div class="border-t pt-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-6">
+                            <?php 
+                                // Check if user liked this article (assuming ArticleController adds 'user_has_liked' or we check manually)
+                                // Since ArticleController::getAllArticles might not inject 'user_has_liked', we might need to rely on JS or update controller.
+                                // For now, standard form.
+                                // Update: Logic for 'user_has_liked' is needed in the loop in ArticleController.
+                            ?>
+                            <!-- Like Button -->
+                            <form action="/article/like" method="POST" class="m-0 p-0">
+                                <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                                <button type="submit" class="flex items-center space-x-2 cursor-pointer <?= !empty($article['user_has_liked']) ? 'text-red-600' : 'text-gray-500 hover:text-red-600' ?> transition focus:outline-none">
+                                    <span class="font-bold text-xl">♥</span>
+                                    <span class="font-medium"><?= $article['likes_count'] ?> J'aime</span>
+                                </button>
+                            </form>
+                            
+                            <!-- Comment Count Display (Non-clickable now, just indicator) -->
+                            <div class="flex items-center space-x-2 text-gray-500">
+                                <span class="font-bold text-xl">💬</span>
+                                <span><?= count($article['comments'] ?? []) ?> Commentaires</span>
+                            </div>
                         </div>
-                        <a href="/article/<?= $article['id'] ?>" 
-                           class="text-blue-600 hover:text-blue-800 font-semibold">
-                            Lire →
-                        </a>
+                    </div>
+                    
+                    <!-- Inline Comments Section -->
+                    <div class="mt-6 border-t pt-6 bg-gray-50 -mx-6 -mb-6 px-6 py-4">
+                        <!-- Existing Comments -->
+                        <?php if (!empty($article['comments'])): ?>
+                            <div class="space-y-4 mb-6">
+                                <?php foreach ($article['comments'] as $comment): ?>
+                                    <div class="border-b border-gray-200 pb-3 last:border-0">
+                                        <div class="flex justify-between items-start">
+                                            <div class="flex items-center mb-1">
+                                                <div class="font-bold text-sm text-gray-900 mr-2"><?= htmlspecialchars($comment['user_name']) ?></div>
+                                                <div class="text-xs text-gray-500"><?= date('d/m/Y', strtotime($comment['created_at'])) ?></div>
+                                            </div>
+                                            <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $comment['user_id']): ?>
+                                                <a href="/comment/delete?id=<?= $comment['id'] ?>" class="text-xs text-red-500 hover:text-red-700 font-medium" onclick="return confirm('Supprimer ce commentaire ?')">Supprimer</a>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="text-sm text-gray-700"><?= nl2br(htmlspecialchars($comment['content'])) ?></div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php else: ?>
+                            <p class="text-sm text-gray-500 italic mb-4">Aucun commentaire. Soyez le premier !</p>
+                        <?php endif; ?>
+                        
+                        <!-- Add Comment Form -->
+                        <form action="/article/comment" method="POST" class="mt-4">
+                            <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                            <div class="flex gap-2">
+                                <input type="text" name="content" class="flex-grow px-3 py-2 border rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Écrire un commentaire..." required>
+                                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-blue-700 transition cursor-pointer">
+                                    Envoyer
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
         <?php endforeach; ?>
     </div>
 <?php endif; ?>

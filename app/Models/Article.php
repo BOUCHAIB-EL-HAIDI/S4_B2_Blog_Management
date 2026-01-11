@@ -1,26 +1,26 @@
 <?php
 namespace Models;
 
-class Comment
+class Article
 {
     private int $id;
+    private string $title;
     private string $content;
-    private string $user_id;
-    private string $article_id;
+    private int $author_id;
     private string $created_at;
 
-    public function __construct(int $id, string $content, int $user_id, int $article_id, string $created_at)
+    public function __construct(int $id, string $title, string $content, int $author_id, string $created_at)
     {
         $this->id = $id;
+        $this->title = $title;
         $this->content = $content;
-        $this->user_id = $user_id;
-        $this->article_id = $article_id;
+        $this->author_id = $author_id;
         $this->created_at = $created_at;
     }
 
     public function getId(): int { return $this->id; }
+    public function getTitle(): string { return $this->title; }
     public function getContent(): string { return $this->content; }
-    public function getUserId(): int { return $this->user_id; }
-    public function getArticleId(): int { return $this->article_id; }
+    public function getAuthorId(): int { return $this->author_id; }
     public function getCreatedAt(): string { return $this->created_at; }
 }

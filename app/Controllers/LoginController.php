@@ -56,13 +56,13 @@ class LoginController extends Controller
         
        switch ($user['role']) {
     case 'reader':
-        $loggedInUser = new Reader($user['id'], $user['name'], $user['email']);
+        $loggedInUser = new Reader($user['id'], $user['name'], $user['email'], $user['password']);
         break;
     case 'author':
-        $loggedInUser = new Author($user['id'], $user['name'], $user['email']);
+        $loggedInUser = new Author($user['id'], $user['name'], $user['email'], $user['password']);
         break;
     case 'admin':
-        $loggedInUser = new Admin($user['id'], $user['name'], $user['email']);
+        $loggedInUser = new Admin($user['id'], $user['name'], $user['email'], $user['password']);
         break;
     }
         

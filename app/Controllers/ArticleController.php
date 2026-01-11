@@ -15,6 +15,17 @@ class ArticleController extends Controller
     
     public function index()
     {
+        // Access Control
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /login');
+            exit;
+        }
+        
+        if (($_SESSION['user_role'] ?? '') === 'admin') {
+            header('Location: /admin/dashboard');
+            exit;
+        }
+
         $categoryFilter = $_GET['category'] ?? null;
         
         // Get all categories for filter
@@ -34,32 +45,15 @@ class ArticleController extends Controller
         ]);
     }
     
-    public function show($id)
-    {
-        $article = $this->getArticleWithDetails($id);
-        
-        if (!$article) {
-            $_SESSION['error'] = "Article non trouvé";
-            header('Location: /articles');
-            exit;
-        }
-        
-        $comments = $this->getArticleComments($id);
-        $userHasLiked = $this->hasUserLiked($id);
-        
-        $this->view('article', [
-            'title' => $article['title'] . ' - MyBlog',
-            'article' => $article,
-            'comments' => $comments,
-            'user_has_liked' => $userHasLiked
-        ]);
-    }
+
     
     private function getAllCategories()
     {
         $stmt = $this->pdo->query("SELECT * FROM categories ORDER BY name");
         return $stmt->fetchAll();
     }
+    
+
     
     private function getAllArticles()
     {
@@ -83,6 +77,8 @@ class ArticleController extends Controller
         
         foreach ($articles as &$article) {
             $article['categories'] = $this->getArticleCategoryNames($article['id']);
+            $article['user_has_liked'] = $this->hasUserLiked($article['id']);
+            $article['comments'] = $this->getArticleComments($article['id']);
         }
         
         return $articles;
@@ -113,6 +109,8 @@ class ArticleController extends Controller
         
         foreach ($articles as &$article) {
             $article['categories'] = $this->getArticleCategoryNames($article['id']);
+            $article['user_has_liked'] = $this->hasUserLiked($article['id']);
+            $article['comments'] = $this->getArticleComments($article['id']);
         }
         
         return $articles;

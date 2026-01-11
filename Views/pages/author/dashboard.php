@@ -125,7 +125,7 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex space-x-2">
-                                    <a href="/author/articles/edit/<?= $article['id'] ?>" 
+                                    <a href="/author/articles/edit?id=<?= $article['id'] ?>" 
                                        class="text-blue-600 hover:text-blue-800" title="Modifier">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -150,7 +150,7 @@
 <script>
 function confirmDelete(articleId) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet article? Cette action est irréversible.')) {
-        window.location.href = '/author/articles/delete/' + articleId;
+        window.location.href = '/author/articles/delete?id=' + articleId;
     }
 }
 </script>

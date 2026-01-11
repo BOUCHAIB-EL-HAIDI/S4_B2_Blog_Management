@@ -60,11 +60,8 @@
                     📁 Gérer Catégories
                 </a>
             <?php endif; ?>
-            <a href="/articles" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition text-center">
+            <a href="/articles" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition text-center ">
                 📚 Explorer Articles
-            </a>
-            <a href="/settings" class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition text-center">
-                ⚙️ Paramètres
             </a>
         </div>
     </div>

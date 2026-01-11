@@ -49,20 +49,25 @@ class SignupController extends Controller
             return;
         }
 
-        $user = new Reader($this->pdo);
-        $data = [
-            'name' => $name,
-            'email' => $email,
-            'password' => $password,
-            'role' => $role
-        ];
+        if (!empty($errors)) {
+            $this->view('signup', ['errors' => $errors]);
+            return;
+        }
 
-        if ($user->signup($data)) {
-            $userData = Reader::findByEmail($this->pdo, $email);
-            $_SESSION['user_id'] = $userData['id'];
-            $_SESSION['user_name'] = $userData['name'];
-            $_SESSION['user_email'] = $userData['email'];
-            $_SESSION['user_role'] = $userData['role'];
+        // Hash password
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        // Insert into DB directly (Controller logic)
+        $sql = "INSERT INTO users (name, email, password, role) VALUES (:name, :email, :password, :role)";
+        $stmt = $this->pdo->prepare($sql);
+        
+        if ($stmt->execute(['name' => $name, 'email' => $email, 'password' => $hashedPassword, 'role' => $role])) {
+            $userId = $this->pdo->lastInsertId();
+            
+            $_SESSION['user_id'] = $userId;
+            $_SESSION['user_name'] = $name;
+            $_SESSION['user_email'] = $email;
+            $_SESSION['user_role'] = $role;
             $_SESSION['success'] = "Compte créé avec succès ! Bienvenue $name";
 
             header('Location: /');

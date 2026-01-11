@@ -40,24 +40,6 @@
     </div>
 <?php endif; ?>
 
-<!-- Articles récents section -->
-<div class="mt-12">
-    <h2 class="text-3xl font-bold mb-6">Articles Récents</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Example article cards - you'll populate this with real data later -->
-        <?php for ($i = 1; $i <= 3; $i++): ?>
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-                <img src="https://via.placeholder.com/400x200" alt="Article" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">Titre de l'article <?= $i ?></h3>
-                    <p class="text-gray-600 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                    <a href="/article/<?= $i ?>" class="text-blue-600 hover:text-blue-800 font-semibold">
-                        Lire la suite →
-                    </a>
-                </div>
-            </div>
-        <?php endfor; ?>
-    </div>
-</div>
+
 
 <?php require_once __DIR__ . '/../partials/footer.php'; ?>

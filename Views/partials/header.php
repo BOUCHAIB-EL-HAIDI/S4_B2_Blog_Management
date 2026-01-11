@@ -7,7 +7,7 @@
     <title><?= $data['title'] ?? 'MyBlog' ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 flex flex-col min-h-screen">
     <nav class="bg-blue-600 text-white shadow-lg">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
@@ -18,8 +18,7 @@
                 <div class="flex items-center space-x-6">
                     <a href="/" class="hover:text-blue-200 transition">Accueil</a>
                     <a href="/articles" class="hover:text-blue-200 transition">Articles</a>
-                    <a href="/about" class="hover:text-blue-200 transition">À propos</a>
-                    <a href="/contact" class="hover:text-blue-200 transition">Contact</a>
+                    <a href="/about" class="hover:text-blue-200 transition">About</a>
                     
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <!-- Role-based navigation -->
@@ -30,17 +29,8 @@
                         <?php endif; ?>
                         
                         <a href="/profile" class="hover:text-blue-200 transition">Mon Profil</a>
-                        
-                        <div class="relative group">
-                            <button class="bg-blue-700 px-4 py-2 rounded hover:bg-blue-800 transition">
-                                <?= htmlspecialchars($_SESSION['user_name']) ?> ▼
-                            </button>
-                            <div class="hidden group-hover:block absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg py-2 z-10">
-                                <a href="/profile" class="block px-4 py-2 hover:bg-gray-100">Mon Profil</a>
-                                <a href="/settings" class="block px-4 py-2 hover:bg-gray-100">Paramètres</a>
-                                <hr class="my-2">
-                                <a href="/logout" class="block px-4 py-2 hover:bg-gray-100 text-red-600">Déconnexion</a>
-                            </div>
+                        <a href="/logout" class="block px-4 py-2 text-white-600 hover:bg-red-600  ">Déconnexion</a>
+
                         </div>
                     <?php else: ?>
                         <a href="/login" class="bg-green-500 px-4 py-2 rounded hover:bg-green-600 transition">
@@ -74,4 +64,4 @@
         <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
     
-    <main class="container mx-auto px-4 py-8">
+    <main class="container mx-auto px-4 py-8 flex-grow">
