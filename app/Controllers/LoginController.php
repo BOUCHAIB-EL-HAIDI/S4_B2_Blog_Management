@@ -94,8 +94,8 @@ class LoginController extends Controller
         session_destroy();
         
         
-        // session_start();
-        // $_SESSION['success'] = "Au revoir " . htmlspecialchars($userName) . "! Vous êtes déconnecté.";
+        
+        
         
        
         header('Location: /');

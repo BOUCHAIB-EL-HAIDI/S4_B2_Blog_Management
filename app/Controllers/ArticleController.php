@@ -15,7 +15,7 @@ class ArticleController extends Controller
     
     public function index()
     {
-        // Access Control
+        
         if (!isset($_SESSION['user_id'])) {
             header('Location: /login');
             exit;
@@ -28,10 +28,10 @@ class ArticleController extends Controller
 
         $categoryFilter = $_GET['category'] ?? null;
         
-        // Get all categories for filter
+        
         $categories = $this->getAllCategories();
         
-        // Get articles
+        
         if ($categoryFilter) {
             $articles = $this->getArticlesByCategory($categoryFilter);
         } else {

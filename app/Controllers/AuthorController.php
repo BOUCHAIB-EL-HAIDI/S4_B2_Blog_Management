@@ -28,10 +28,10 @@ class AuthorController extends Controller
         
         $authorId = $_SESSION['user_id'];
         
-        // Get statistics
+        
         $stats = $this->getAuthorStats($authorId);
         
-        // Get author's articles with likes and comments count
+        
         $articles = $this->getAuthorArticles($authorId);
         
         $this->view('author/dashboard', [
@@ -43,12 +43,12 @@ class AuthorController extends Controller
     
     private function getAuthorStats($authorId)
     {
-        // Total articles
+        
         $stmt = $this->pdo->prepare("SELECT COUNT(*) as total FROM articles WHERE author_id = ?");
         $stmt->execute([$authorId]);
         $totalArticles = $stmt->fetch()['total'];
         
-        // Total likes
+        
         $stmt = $this->pdo->prepare("
             SELECT COUNT(*) as total 
             FROM likes l
@@ -58,7 +58,7 @@ class AuthorController extends Controller
         $stmt->execute([$authorId]);
         $totalLikes = $stmt->fetch()['total'];
         
-        // Total comments
+        
         $stmt = $this->pdo->prepare("
             SELECT COUNT(*) as total 
             FROM comments c
@@ -72,7 +72,7 @@ class AuthorController extends Controller
             'total_articles' => $totalArticles,
             'total_likes' => $totalLikes,
             'total_comments' => $totalComments,
-            'total_views' => 0 // You can implement views tracking later
+            'total_views' => 0 
         ];
     }
     
@@ -96,7 +96,7 @@ class AuthorController extends Controller
         $stmt->execute([$authorId]);
         $articles = $stmt->fetchAll();
         
-        // Get categories for each article
+        
         foreach ($articles as &$article) {
             $stmt = $this->pdo->prepare("
                 SELECT c.name
@@ -129,7 +129,7 @@ class AuthorController extends Controller
             return;
         }
         
-        // POST - Create article
+        
         $title = trim($_POST['title'] ?? '');
         $content = trim($_POST['content'] ?? '');
         $categories = $_POST['categories'] ?? [];
@@ -154,7 +154,7 @@ class AuthorController extends Controller
         try {
             $this->pdo->beginTransaction();
             
-            // Insert article
+            
             $stmt = $this->pdo->prepare("
                 INSERT INTO articles (title, content, author_id, created_at)
                 VALUES (?, ?, ?, NOW())
@@ -162,7 +162,7 @@ class AuthorController extends Controller
             $stmt->execute([$title, $content, $_SESSION['user_id']]);
             $articleId = $this->pdo->lastInsertId();
             
-            // Insert categories
+            
             if (!empty($categories)) {
                 $stmt = $this->pdo->prepare("
                     INSERT INTO article_category (article_id, category_id)
@@ -197,7 +197,7 @@ class AuthorController extends Controller
             exit; 
         }
         
-        // Get article and verify ownership
+        
         $article = $this->getArticleById($id);
         
         if (!$article || $article['author_id'] != $_SESSION['user_id']) {
@@ -230,7 +230,7 @@ class AuthorController extends Controller
             exit; 
         }
 
-        // POST - Update article
+        
         $title = trim($_POST['title'] ?? '');
         $content = trim($_POST['content'] ?? '');
         $categories = $_POST['categories'] ?? [];
@@ -254,7 +254,7 @@ class AuthorController extends Controller
         try {
             $this->pdo->beginTransaction();
             
-            // Update article
+            
             $stmt = $this->pdo->prepare("
                 UPDATE articles 
                 SET title = ?, content = ?
@@ -262,11 +262,11 @@ class AuthorController extends Controller
             ");
             $stmt->execute([$title, $content, $id, $_SESSION['user_id']]);
             
-            // Delete old categories
+            
             $stmt = $this->pdo->prepare("DELETE FROM article_category WHERE article_id = ?");
             $stmt->execute([$id]);
             
-            // Insert new categories
+            
             if (!empty($categories)) {
                 $stmt = $this->pdo->prepare("
                     INSERT INTO article_category (article_id, category_id)
@@ -295,14 +295,14 @@ class AuthorController extends Controller
     {
         $this->checkAuthorAccess();
         
-        $id = $_GET['id'] ?? null; // ID is passed via GET for delete link
+        $id = $_GET['id'] ?? null; 
         if (!$id) {
             $_SESSION['error'] = "ID d'article manquant pour la suppression.";
             header('Location: /author/dashboard');
             exit;
         }
 
-        // Verify ownership
+        
         $stmt = $this->pdo->prepare("SELECT author_id FROM articles WHERE id = ?");
         $stmt->execute([$id]);
         $article = $stmt->fetch();

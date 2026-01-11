@@ -20,7 +20,7 @@ class CommentController extends Controller
             exit;
         }
 
-        // Allow Readers and Authors (Author extends Reader) and Admins
+        
         error_log("CommentController: User Role is " . ($_SESSION['user_role'] ?? 'NOT SET'));
 
         $articleId = $_POST['article_id'] ?? null;
@@ -48,7 +48,7 @@ class CommentController extends Controller
             $_SESSION['error'] = "Veuillez écrire un commentaire.";
         }
 
-        // Redirect back using Referer if valid, else Articles
+        
         $redirectUrl = $_SERVER['HTTP_REFERER'] ?? "/articles";
         header("Location: $redirectUrl");
         exit;
@@ -61,7 +61,7 @@ class CommentController extends Controller
             exit;
         }
 
-        // Allow Readers and Authors
+        
         if (!in_array($_SESSION['user_role'], ['reader', 'author'])) {
             $_SESSION['error'] = "Action non autorisée.";
             header("Location: /articles");
@@ -75,7 +75,7 @@ class CommentController extends Controller
         }
 
         $userId = $_SESSION['user_id'];
-        // Get the comment to check ownership
+        
         $stmt = $this->pdo->prepare("SELECT * FROM comments WHERE id = ?");
         $stmt->execute([$id]);
         $comment = $stmt->fetch();
@@ -86,14 +86,14 @@ class CommentController extends Controller
             exit;
         }
 
-        // Check ownership (only owner can delete)
+        
         if ($comment['user_id'] != $_SESSION['user_id']) {
             $_SESSION['error'] = "Vous n'êtes pas autorisé à supprimer ce commentaire.";
             header("Location: /article/" . $comment['article_id']);
             exit;
         }
 
-        // Delete
+        
         $stmt = $this->pdo->prepare("DELETE FROM comments WHERE id = ?");
         if ($stmt->execute([$id])) {
             $_SESSION['success'] = "Commentaire supprimé.";

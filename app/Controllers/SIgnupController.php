@@ -54,10 +54,10 @@ class SignupController extends Controller
             return;
         }
 
-        // Hash password
+        
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        // Insert into DB directly (Controller logic)
+        
         $sql = "INSERT INTO users (name, email, password, role) VALUES (:name, :email, :password, :role)";
         $stmt = $this->pdo->prepare($sql);
         

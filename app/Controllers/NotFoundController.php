@@ -7,7 +7,7 @@ class NotFoundController extends Controller
 {
     public function index()
     {
-        // Set 404 status code
+        
         http_response_code(404);
         
         $this->view('404', [

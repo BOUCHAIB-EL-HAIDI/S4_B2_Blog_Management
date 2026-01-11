@@ -44,10 +44,10 @@
                     <div class="border-t pt-4 flex items-center justify-between">
                         <div class="flex items-center space-x-6">
                             <?php 
-                                // Check if user liked this article (assuming ArticleController adds 'user_has_liked' or we check manually)
-                                // Since ArticleController::getAllArticles might not inject 'user_has_liked', we might need to rely on JS or update controller.
-                                // For now, standard form.
-                                // Update: Logic for 'user_has_liked' is needed in the loop in ArticleController.
+                                
+                                
+                                
+                                
                             ?>
                             <!-- Like Button -->
                             <form action="/article/like" method="POST" class="m-0 p-0">
